@@ -61,7 +61,7 @@ loader加载器--
                                 module.exports = {
                                      plugins:[autoprefixer] //挂载插件
                                 }
-    打包处理js文件中的高级语法
+    打包处理js文件中的高级语法:
                             npm i babel-loader @babel/core @babel/runtime -D
                             npm i @babel/preset-env @babel/plugin-transform-runtime @babel/plugin-proposal-class-properties -D
                         项目中创建babel配置文件babel.config.js,并初始化 ->:
@@ -72,3 +72,37 @@ loader加载器--
                         在webpack.config.js > module ->rules数组中，添加loader规则:
                                                                     {test:/\.js$/,use:'babel-loader',exclude:/node_modules/}
                                                                     //exclude排除node_modules中的js文件
+    安装vue组件的加载器:
+                        npm i vue-loader vue-template-compiler -D
+                    在webpack.config.js配置文件中，添加vue-loader的配置->
+                                                                    const VueLoaderPlugin = require('vue-loader/lib/plugin')
+
+                                                                    plugins:[
+                                                                        new VueLoaderPlugin()
+                                                                    ]
+                                                                    还有rules中添加规则：{test:/\.vue$/,loader:'vue-loader'}
+在webpack项目中使用Vue:
+                       1. npm i vue -s
+                       2. src->index.js中 import vue from 'vue'  导入vue构造函数
+                       3. 创建vue实例对象，并指定要控制的el区域
+                       4. 通过 render 函数渲染app根组件
+                       代码如下:
+                            src>index.js ->:
+                                            //导入Vue构造函数
+                                            import Vue from 'vue'
+                                            //导入根组件
+                                            import app from './components/app.vue'
+                                            const vm = new Vue({
+                                            //指定vm实例要控制的页面区域
+                                            el:'#app',
+                                            //通过render函数，把指定的组件渲染到el区域中
+                                            render: h => h(app)
+                                            })    
+
+                            index.html ->  
+                                        <!-- 要被vue组件控制的区域 -->
+                                        <div id="app"></div>                 
+webpack打包发布:
+                //在package.json文件中配置webpack打包命令
+                //该命令默认加载项目根目录中的webpack.config.js配置文件       
+                //在scripts中添加打包命令： "build":"webpack -p",                                 
